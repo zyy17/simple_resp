@@ -16,8 +16,8 @@ It will always follow KISS principle and just use basic C++11 features.
 
     simple_resp is managed by CMake. You can compile the project as following commands:
 
-      $ mkdir build
-      $ cd build ; cmake ..
+      $ mkdir build && cd build
+      $ cmake ..
       $ make
 
     You can run test code:
