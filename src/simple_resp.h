@@ -45,7 +45,8 @@ public:
 };
 
 class Encoder {
-    // I don't know how to do that yet.
+public:
+    Encoder() = default;
 };
 
 } // namespace SimpleRESP

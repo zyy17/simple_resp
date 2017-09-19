@@ -8,8 +8,8 @@ add_compile_options(-Wall)
 
 include_directories(src)
 
-set(SOURCE_FILES src/simple_resp.cpp src/simple_resp.h)
+set(SOURCE_FILES src/simple_resp.cc src/simple_resp.h)
 add_library(simpleresp STATIC ${SOURCE_FILES})
 
-add_executable(decode_test example/decode_test.cpp)
+add_executable(decode_test example/decode_test.cc)
 target_link_libraries(decode_test simpleresp)
