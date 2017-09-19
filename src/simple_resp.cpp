@@ -6,9 +6,33 @@ namespace SimpleRESP {
 using vector_num_type = std::vector<std::string>::size_type;
 using string_num_type = std::string::size_type;
 
+STATUS Decoder::decode(const std::string &input) {
+    STATUS status = OK;
+    redis_command.erase(redis_command.begin(), redis_command.end());  // clean output buffer
+    if (input.length() < 0) {
+        return EMPTY_INPUT;
+    }
+    switch (input[0]) {
+        case SIMPLE_STRINGS:
+            break;
+        case ERRORS:
+            break;
+        case INTEGERS:
+            break;
+        case BULK_STRINGS:
+            break;
+        case ARRAYS:
+            status = parse_arrays(input, redis_command);
+            break;
+        default:
+            return ILLEGAL_RESP_TYPE;
+    }
+    return status;
+}
+
 STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>& redis_command)
 {
-    STATE state = INIT;
+    PARSE_STATE state = INIT;
     std::string token;
     string_num_type bulk_string_length = 0;
     vector_num_type args_num = 0;
@@ -62,4 +86,4 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
     }
 }
 
-} // SimpleRESP
+} // namespace SimpleRESP
