@@ -13,3 +13,6 @@ add_library(simpleresp STATIC ${SOURCE_FILES})
 
 add_executable(decode_test example/decode_test.cc)
 target_link_libraries(decode_test simpleresp)
+
+add_executable(encode_test example/encode_test.cc)
+target_link_libraries(encode_test simpleresp)

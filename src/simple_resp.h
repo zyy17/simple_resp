@@ -5,7 +5,7 @@
 #ifndef SIMPLE_RESP_SIMPLE_RESP_H
 #define SIMPLE_RESP_SIMPLE_RESP_H
 
-namespace SimpleRESP {
+namespace simple_resp {
 
 enum RESP_TYPE {
     SIMPLE_STRINGS = '+',
@@ -18,8 +18,9 @@ enum RESP_TYPE {
 enum STATUS {
     OK = 0,
     EMPTY_INPUT = 1,
-    ILLEGAL_RESP_TYPE = 2,
-    PARSE_ERROR = 3,
+    INVAILID_RESP_TYPE = 2,
+    INVAILID_RESP_FORMAT = 3,
+    UNKNOWN_INTERNAL_ERROR = 3,
 };
 
 enum PARSE_STATE {
@@ -34,7 +35,7 @@ public:
 
     STATUS decode(const std::string &input);
 
-    std::vector<std::string> redis_command;
+    std::vector<std::string> decoded_redis_command;
 private:
     STATUS parse_arrays(const std::string&, std::vector<std::string>&);
 
@@ -47,8 +48,15 @@ public:
 class Encoder {
 public:
     Encoder() = default;
+    STATUS encode(const RESP_TYPE &type, const std::vector<std::string> &args);
+
+    std::string encoded_redis_command;
+
+    // Encoder is non-copyable.
+    Encoder(const Encoder &) = delete;
+    Encoder operator= (const Encoder &) = delete;
 };
 
-} // namespace SimpleRESP
+} // namespace simple_resp
 
 #endif //SIMPLE_RESP_SIMPLE_RESP_H

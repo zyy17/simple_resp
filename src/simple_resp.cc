@@ -1,14 +1,14 @@
-
 #include "simple_resp.h"
 
-namespace SimpleRESP {
+namespace simple_resp {
 
 using vector_num_type = std::vector<std::string>::size_type;
 using string_num_type = std::string::size_type;
 
-STATUS Decoder::decode(const std::string &input) {
+STATUS Decoder::decode(const std::string &input)
+{
     STATUS status = OK;
-    redis_command.erase(redis_command.begin(), redis_command.end());  // clean output buffer
+    decoded_redis_command.erase(decoded_redis_command.begin(), decoded_redis_command.end());  // clean output buffer
     if (input.length() < 0) {
         return EMPTY_INPUT;
     }
@@ -22,10 +22,10 @@ STATUS Decoder::decode(const std::string &input) {
         case BULK_STRINGS:
             break;
         case ARRAYS:
-            status = parse_arrays(input, redis_command);
+            status = parse_arrays(input, decoded_redis_command);
             break;
         default:
-            return ILLEGAL_RESP_TYPE;
+            return INVAILID_RESP_TYPE;
     }
     return status;
 }
@@ -38,10 +38,13 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
     vector_num_type args_num = 0;
 
     if (*input.begin() != ARRAYS) {
-        return PARSE_ERROR;
+        return INVAILID_RESP_TYPE;
     }
 
     for (auto it = input.begin() + 1, token_start = input.begin() + 1; it != input.end(); it++) {
+        if (args_num > 0 && redis_command.size() == args_num) {
+            return OK;
+        }
         if (*it == '\r' && *(it + 1) == '\n') {
             token = std::string(token_start, it);
             switch (state) {
@@ -59,15 +62,15 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
                             state = PARSE_BLUK_STRINGS;
                             break;
                         default:
-                            return PARSE_ERROR;
+                            return INVAILID_RESP_FORMAT;
                     }
                     break;
                 case PARSE_BLUK_STRINGS:
                     if (bulk_string_length <= 0) {
-                        return PARSE_ERROR;
+                        return INVAILID_RESP_FORMAT;
                     }
                     if (token.length() != bulk_string_length) {
-                        return PARSE_ERROR;
+                        return INVAILID_RESP_FORMAT;
                     }
                     redis_command.emplace_back(token);
                     state = PARSE_ELEMENTS;
@@ -82,8 +85,31 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
     if (args_num > 0 && redis_command.size() == args_num) {
         return OK;
     } else {
-        return PARSE_ERROR;
+        return UNKNOWN_INTERNAL_ERROR;
     }
 }
 
-} // namespace SimpleRESP
+STATUS Encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &args)
+{
+    STATUS status = OK;
+    encoded_redis_command.erase(encoded_redis_command.begin(), encoded_redis_command.end());
+    switch (type) {
+        case SIMPLE_STRINGS:
+            encoded_redis_command = "+" + args[0] + "\r\n";  // only takes the first element and ignore rest
+            break;
+        case ERRORS:
+            break;
+        case INTEGERS:
+            break;
+        case BULK_STRINGS:
+            break;
+        case ARRAYS:
+            encoded_redis_command = "*" + std::to_string(args.size()) + "\r\n";
+            for (auto it = args.begin(); it != args.end(); ++it) {
+                encoded_redis_command += "$" + std::to_string(it->length()) + "\r\n" + *it + "\r\n";
+            }
+            break;
+    }
+    return status;
+}
+} // namespace simple_resp

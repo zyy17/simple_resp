@@ -22,7 +22,8 @@ It will always follow KISS principle and just use basic C++11 features.
 
     You can run test code:
 
-      $ ./build/decode_test
+      $ ./build/decode_test  # no output if success
+      $ ./build/encode_test  # no output if success
 
 ## WIP
 
