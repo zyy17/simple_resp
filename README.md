@@ -10,18 +10,19 @@ It will always follow KISS principle and just use basic C++11 features.
 
 ## How to Run
 
-SimpleRESP is managed by CMake. You can compile the project as following commands:
+- g++ (C++11 supported, maybe g++ > 4.8);
 
-```shell
-$ mkdir build
-$ cd build ; cmake ..
-$ make
-```
-You can run test code:
+- compile command:
 
-```shell
-$ ./build/decode_test
-```
+    SimpleRESP is managed by CMake. You can compile the project as following commands:
+
+      $ mkdir build
+      $ cd build ; cmake ..
+      $ make
+
+    You can run test code:
+
+      $ ./build/decode_test
 
 ## WIP
 
@@ -30,4 +31,3 @@ $ ./build/decode_test
 - more test cases and examples
 
 - complete RESP support
-
