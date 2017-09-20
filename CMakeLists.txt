@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 add_compile_options(-ggdb3)
 add_compile_options(-Wall)
 
-include_directories(src)
+include_directories(include)
 
-set(SOURCE_FILES src/simple_resp.cc src/simple_resp.h)
+set(SOURCE_FILES src/simple_resp.cc)
 add_library(simpleresp STATIC ${SOURCE_FILES})
 
 add_executable(decode_test example/decode_test.cc)
