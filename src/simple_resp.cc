@@ -98,6 +98,7 @@ STATUS Encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &ar
             encoded_redis_command = "+" + args[0] + "\r\n";  // only takes the first element and ignore rest
             break;
         case ERRORS:
+            encoded_redis_command = "-" + args[0] + "\r\n";  // only takes the first element and ignore rest
             break;
         case INTEGERS:
             break;
