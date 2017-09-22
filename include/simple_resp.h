@@ -48,9 +48,7 @@ public:
 class Encoder {
 public:
     Encoder() = default;
-    STATUS encode(const RESP_TYPE &type, const std::vector<std::string> &args);
-
-    std::string encoded_redis_command;
+    std::string encode(const RESP_TYPE &type, const std::vector<std::string> &args);
 
     // Encoder is non-copyable.
     Encoder(const Encoder &) = delete;

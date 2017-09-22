@@ -89,28 +89,28 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
     }
 }
 
-STATUS Encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &args)
+std::string Encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &args)
 {
-    STATUS status = OK;
-    encoded_redis_command.erase(encoded_redis_command.begin(), encoded_redis_command.end());
+    std::string response;
+
     switch (type) {
         case SIMPLE_STRINGS:
-            encoded_redis_command = "+" + args[0] + "\r\n";  // only takes the first element and ignore rest
+            response = "+" + args[0] + "\r\n";  // only takes the first element and ignore rest
             break;
         case ERRORS:
-            encoded_redis_command = "-" + args[0] + "\r\n";  // only takes the first element and ignore rest
+            response = "-" + args[0] + "\r\n";  // only takes the first element and ignore rest
             break;
         case INTEGERS:
             break;
         case BULK_STRINGS:
             break;
         case ARRAYS:
-            encoded_redis_command = "*" + std::to_string(args.size()) + "\r\n";
+            response = "*" + std::to_string(args.size()) + "\r\n";
             for (auto it = args.begin(); it != args.end(); ++it) {
-                encoded_redis_command += "$" + std::to_string(it->length()) + "\r\n" + *it + "\r\n";
+                response += "$" + std::to_string(it->length()) + "\r\n" + *it + "\r\n";
             }
             break;
     }
-    return status;
+    return response;
 }
 } // namespace simple_resp
