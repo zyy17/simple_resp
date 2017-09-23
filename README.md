@@ -4,7 +4,7 @@ simple_resp is a simple RESP(REdis Serialization Protocol) decode and encode lib
 
 ## API
 
-As the name says, simple_resp is quite **simple**. It just has two basic class: `Decoder` and `Encoder`.
+As the name says, simple_resp is quite **simple**. It just has two basic class: `decoder` and `Encoder`.
 It will always follow KISS principle and just use basic C++11 features.
 
 

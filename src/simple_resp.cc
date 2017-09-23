@@ -5,7 +5,7 @@ namespace simple_resp {
 using vector_num_type = std::vector<std::string>::size_type;
 using string_num_type = std::string::size_type;
 
-STATUS Decoder::decode(const std::string &input)
+STATUS decoder::decode(const std::string &input)
 {
     STATUS status = OK;
     decoded_redis_command.erase(decoded_redis_command.begin(), decoded_redis_command.end());  // clean output buffer
@@ -30,7 +30,7 @@ STATUS Decoder::decode(const std::string &input)
     return status;
 }
 
-STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>& redis_command)
+STATUS decoder::parse_arrays(const std::string &input, std::vector<std::string>& redis_command)
 {
     PARSE_STATE state = INIT;
     std::string token;
@@ -89,7 +89,7 @@ STATUS Decoder::parse_arrays(const std::string &input, std::vector<std::string>&
     }
 }
 
-std::string Encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &args)
+std::string encoder::encode(const RESP_TYPE &type, const std::vector<std::string> &args)
 {
     std::string response;
 

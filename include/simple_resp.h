@@ -29,9 +29,9 @@ enum PARSE_STATE {
     PARSE_BLUK_STRINGS = 2
 };
 
-class Decoder {
+class decoder {
 public:
-    Decoder() = default;
+    decoder() = default;
 
     STATUS decode(const std::string &input);
 
@@ -40,19 +40,19 @@ private:
     STATUS parse_arrays(const std::string&, std::vector<std::string>&);
 
 public:
-    // Decoder is non-copyable.
-    Decoder(const Decoder &) = delete;
-    Decoder operator= (const Decoder &) = delete;
+    // decoder is non-copyable.
+    decoder(const decoder &) = delete;
+    decoder operator= (const decoder &) = delete;
 };
 
-class Encoder {
+class encoder {
 public:
-    Encoder() = default;
+    encoder() = default;
     std::string encode(const RESP_TYPE &type, const std::vector<std::string> &args);
 
     // Encoder is non-copyable.
-    Encoder(const Encoder &) = delete;
-    Encoder operator= (const Encoder &) = delete;
+    encoder(const encoder &) = delete;
+    encoder operator= (const encoder &) = delete;
 };
 
 } // namespace simple_resp
