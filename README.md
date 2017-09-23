@@ -20,15 +20,10 @@ It will always follow KISS principle and just use basic C++11 features.
       $ cmake ..
       $ make
 
-    You can run test code:
+    You can run simple unit test:
 
-      $ ./build/decode_test  # no output if success
-      $ ./build/encode_test  # no output if success
+      $ make test
 
 ## WIP
-
-- `decoder`
-
-- more test cases and examples
 
 - complete RESP support
