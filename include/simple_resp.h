@@ -29,15 +29,23 @@ enum PARSE_STATE {
     PARSE_BLUK_STRINGS = 2
 };
 
+struct encode_result {
+    STATUS status;
+    std::string response;
+};
+
+struct decode_result {
+    STATUS status;
+    std::vector<std::string> response;
+};
+
 class decoder {
 public:
     decoder() = default;
+    decode_result decode(const std::string &input);
 
-    STATUS decode(const std::string &input);
-
-    std::vector<std::string> decoded_redis_command;
 private:
-    STATUS parse_arrays(const std::string&, std::vector<std::string>&);
+    decode_result parse_arrays(const std::string &input);
 
 public:
     // decoder is non-copyable.
@@ -48,7 +56,7 @@ public:
 class encoder {
 public:
     encoder() = default;
-    std::string encode(const RESP_TYPE &type, const std::vector<std::string> &args);
+    encode_result encode(const RESP_TYPE &type, const std::vector<std::string> &args);
 
     // Encoder is non-copyable.
     encoder(const encoder &) = delete;
